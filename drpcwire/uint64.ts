@@ -2,7 +2,7 @@ const mask = 0xffffffff;
 const bitsInBlock = 32;
 
 /**
- * Uint64 provides a safeway for JavaScript to bitshift unsigned 64bit integers. Upon writing,
+ * uint64 provides a safeway for JavaScript to bitshift unsigned 64bit integers. Upon writing,
  * JavaScript only supports bitshift operations on signed 32bit integers. I would've used the
  * `integer` package, but it only supports signed values.
  */
