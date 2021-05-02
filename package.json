@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "description": "A node js implementation of storj/drpc",
   "scripts": {
-    "lint": "eslint --fix **/*.ts",
+    "lint": "eslint **/*.ts",
+    "lint-fix": "eslint **/*.ts --fix",
     "test": "jest --coverage"
   },
   "repository": {

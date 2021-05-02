@@ -26,13 +26,6 @@ jobs:
       - name: Lint
         run: |
           npm run lint
-          [ ! -z "$(git status -s | tr -d $'\n')" ] && {
-            echo "modified files exist after linting."
-            echo "run 'npm run lint' to fix and commit the modified files:"
-            echo "---"
-            git status -s
-            exit 1
-          }
 
       - name: Test
         run: |
