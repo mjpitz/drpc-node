@@ -2,9 +2,26 @@ const mask = 0xffffffff;
 const bitsInBlock = 32;
 
 /**
- * uint64 provides a safeway for JavaScript to bitshift unsigned 64bit integers. Upon writing,
- * JavaScript only supports bitshift operations on signed 32bit integers. I would've used the
- * `integer` package, but it only supports signed values.
+ * uint64 is a pure-JavaScript implementation of a uint64. Since JavaScript numbers are 64-bit floating point
+ * numbers, we wouldn't be able to store the full spectrum of uint64 without some loss of precision. This
+ * upper limit for a number is somewhere around (2 ^ 53) - 1.
+ *
+ * As you might guess, there are a handful of libraries out there that I could've used. I chose to write my
+ * own for a few reasons.
+ *   - many uint64 implementations call into C which can complicate things on the browser
+ *   - trying to sift through dozens of libraries looking for a pure javascript implementation didn't seem
+ *     like the best use of time.
+ *   - there were other immutability guarantees I wanted to ensure and that added another thing to the list
+ *     look for.
+ *
+ * <code>
+ *     const mask = uint64.new(1).shiftLeft(32).subtract(1)
+ *
+ *     // yields ffffffff00000000
+ *     const highBits = uint64.MAX_VALUE.and(mask)
+ * </code>
+ *
+ * This is currently a partial implementation and only provides the methods needed by the drpc.
  */
 export default class uint64 {
     static get MAX_VALUE(): uint64 {
