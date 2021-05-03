@@ -51,6 +51,14 @@ describe("uint64", () => {
         testUint64 = testUint64.add(1);
         expect(testUint64.toString(16)).toEqual("100000000");
         expect(testUint64.toString()).toEqual("4294967296");
+
+        testUint64 = testUint64.add(-6);
+        expect(testUint64.toString(16)).toEqual("fffffffa");
+        expect(testUint64.toString()).toEqual("4294967290");
+
+        testUint64 = testUint64.subtract(-6);
+        expect(testUint64.toString(16)).toEqual("100000000");
+        expect(testUint64.toString()).toEqual("4294967296");
     });
 
     test("uint64 comparisons", () => {
@@ -68,6 +76,7 @@ describe("uint64", () => {
             expect(b.lessThan(a)).toBeFalsy();
         }
 
+        // check the minor bitset
         {
             const a = uint64.new(137438887936);
             const b = uint64.new(137438887937);
@@ -82,6 +91,7 @@ describe("uint64", () => {
             expect(b.lessThan(a)).toBeFalsy();
         }
 
+        // check the major bitset
         {
             const a = uint64.new(137438887936);
             const b = uint64.new(237438887936);

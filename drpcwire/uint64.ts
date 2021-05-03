@@ -15,12 +15,12 @@ export default class uint64 {
         let low, high;
 
         if (typeof val == "number") {
-            const hex = base16enc(val);
+            const hex = val.toString(16);
             const minorStart = Math.max(0, hex.length - 8);
             const majorStart = Math.max(0, minorStart - 8);
 
-            low = base16dec(hex.substring(minorStart)) >>> 0;
-            high = base16dec(hex.substring(majorStart, minorStart)) >>> 0;
+            low = parseInt(hex.substring(minorStart), 16) >>> 0;
+            high = parseInt(hex.substring(majorStart, minorStart), 16) >>> 0;
         } else {
             const v = (val as uint64);
             low = v.low;
@@ -178,7 +178,7 @@ export default class uint64 {
     }
 
     valueOf(): number {
-        return base16dec(this.toString(16));
+        return parseInt(this.toString(16), 16);
     }
 
     toString(radix?: number): string {
@@ -190,22 +190,6 @@ export default class uint64 {
 
         return toString(this, radix);
     }
-}
-
-// utility functions
-
-function base16enc(val: number): string {
-    return leftpad(val.toString(16), "0", 8);
-}
-
-function base16dec(val: string): number {
-    return parseInt(val, 16);
-}
-
-function leftpad(str: string, char: string, desiredLength: number): string {
-    const l = Math.max(0, desiredLength - str.length);
-    const prefix = new Array(l).fill(char).join("");
-    return prefix + str;
 }
 
 function toString(v: uint64, base: number): string {
