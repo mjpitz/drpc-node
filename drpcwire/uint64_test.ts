@@ -69,11 +69,11 @@ describe("uint64", () => {
             expect(a.equals(b)).toBeTruthy();
             expect(b.equals(a)).toBeTruthy();
 
-            expect(a.greaterThan(b)).toBeFalsy();
-            expect(b.greaterThan(a)).toBeFalsy();
+            expect(a.greaterThan(b)).toBeFalsyd();
+            expect(b.greaterThan(a)).toBeFalsyd();
 
-            expect(a.lessThan(b)).toBeFalsy();
-            expect(b.lessThan(a)).toBeFalsy();
+            expect(a.lessThan(b)).toBeFalsyd();
+            expect(b.lessThan(a)).toBeFalsyd();
         }
 
         // check the minor bitset
@@ -81,14 +81,14 @@ describe("uint64", () => {
             const a = uint64.new(137438887936);
             const b = uint64.new(137438887937);
 
-            expect(a.equals(b)).toBeFalsy();
-            expect(b.equals(a)).toBeFalsy();
+            expect(a.equals(b)).toBeFalsyd();
+            expect(b.equals(a)).toBeFalsyd();
 
-            expect(a.greaterThan(b)).toBeFalsy();
+            expect(a.greaterThan(b)).toBeFalsyd();
             expect(b.greaterThan(a)).toBeTruthy();
 
             expect(a.lessThan(b)).toBeTruthy();
-            expect(b.lessThan(a)).toBeFalsy();
+            expect(b.lessThan(a)).toBeFalsyd();
         }
 
         // check the major bitset
@@ -96,14 +96,14 @@ describe("uint64", () => {
             const a = uint64.new(137438887936);
             const b = uint64.new(237438887936);
 
-            expect(a.equals(b)).toBeFalsy();
-            expect(b.equals(a)).toBeFalsy();
+            expect(a.equals(b)).toBeFalsyd();
+            expect(b.equals(a)).toBeFalsyd();
 
-            expect(a.greaterThan(b)).toBeFalsy();
+            expect(a.greaterThan(b)).toBeFalsyd();
             expect(b.greaterThan(a)).toBeTruthy();
 
             expect(a.lessThan(b)).toBeTruthy();
-            expect(b.lessThan(a)).toBeFalsy();
+            expect(b.lessThan(a)).toBeFalsyd();
         }
     });
 });
