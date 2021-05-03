@@ -2,6 +2,9 @@
 
 The start to a NodeJS implementation of Stroj Labs [DRPC](https://storj.github.io/drpc/) project.
 
+[![Codecov](https://img.shields.io/codecov/c/github/mjpitz/drpc-node)](https://codecov.io/gh/mjpitz/drpc-node)
+![Experimental](https://img.shields.io/badge/version-experimental-green.svg)
+
 Please see:
 
  * [DRPC website](https://storj.github.io/drpc/)
