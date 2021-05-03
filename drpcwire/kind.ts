@@ -12,7 +12,7 @@ const kindNames = [
 /**
  * Kind is the enumeration of all the different kinds of message drpc sends.
  */
-export default class Kind extends Number {
+export default class Kind {
     static get values(): Kind[] {
         return [
             Kind.RESERVED,
@@ -77,9 +77,14 @@ export default class Kind extends Number {
      */
     static INVOKE_METADATA = new Kind(7)
 
+    private readonly value: number
 
-    constructor(value: any) {
-        super(value);
+    constructor(value: number) {
+        this.value = value;
+    }
+
+    valueOf(): number {
+        return this.value;
     }
 
     toString(): string {

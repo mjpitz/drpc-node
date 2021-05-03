@@ -8,7 +8,7 @@ const controlBit = 0b10000000;
 const kindBits = 0b01111110;
 
 interface FrameProps {
-    data: Uint8Array
+    data?: Buffer
     id: ID
     kind: Kind
     done: boolean
@@ -30,7 +30,7 @@ export default class Frame {
         const header = buf.readUInt8(0);
         const done = (header & doneBit) > 0;
         const control = (header & controlBit) > 0;
-        const kind = (header & kindBits) >>> 0;
+        const kind = (header & kindBits) >>> 1;
 
         let streamID: uint64;
         let messageID: uint64;
@@ -60,7 +60,7 @@ export default class Frame {
         return fr.appendTo(buf);
     }
 
-    data: Uint8Array
+    data?: Buffer
     id: ID
     kind: Kind
     done: boolean
@@ -84,22 +84,26 @@ export default class Frame {
             header |= controlBit;
         }
 
+        const dataLength = this.data ? this.data.length : 0
+
         let outFrame = Buffer.alloc(1, header & 255);
         outFrame = appendVarint(outFrame, this.id.stream);
         outFrame = appendVarint(outFrame, this.id.message);
-        outFrame = appendVarint(outFrame, uint64.new(this.data.length));
+        outFrame = appendVarint(outFrame, uint64.new(dataLength));
 
-        const outLength = buf?.length + outFrame.length + this.data.length;
+        const bufLength = buf ? buf.length : 0
+        const outLength = bufLength + outFrame.length + dataLength;
+
         const out = Buffer.alloc(outLength);
 
         if (buf) {
             out.set(buf, 0);
         }
 
-        out.set(outFrame, buf?.length);
+        out.set(outFrame, bufLength);
 
         if (this.data) {
-            out.set(this.data, buf?.length + outFrame.length);
+            out.set(this.data, bufLength + outFrame.length);
         }
 
         return out;
