@@ -11,8 +11,8 @@ interface FrameProps {
     data?: Buffer
     id: ID
     kind: Kind
-    done: boolean
-    control: boolean
+    done?: boolean
+    control?: boolean
 }
 
 /**
@@ -60,18 +60,18 @@ export default class Frame {
         return fr.appendTo(buf);
     }
 
-    data?: Buffer
+    data: Buffer
     id: ID
     kind: Kind
     done: boolean
     control: boolean
 
     constructor({data, id, kind, done, control}: FrameProps) {
-        this.data = data;
+        this.data = data ? data : Buffer.alloc(0);
         this.id = id;
         this.kind = kind;
-        this.done = done;
-        this.control = control;
+        this.done = Boolean(done);
+        this.control = Boolean(control);
     }
 
     private appendTo(buf?: Buffer): Buffer {
@@ -84,15 +84,13 @@ export default class Frame {
             header |= controlBit;
         }
 
-        const dataLength = this.data ? this.data.length : 0
-
         let outFrame = Buffer.alloc(1, header & 255);
         outFrame = appendVarint(outFrame, this.id.stream);
         outFrame = appendVarint(outFrame, this.id.message);
-        outFrame = appendVarint(outFrame, uint64.new(dataLength));
+        outFrame = appendVarint(outFrame, uint64.new(this.data.length));
 
-        const bufLength = buf ? buf.length : 0
-        const outLength = bufLength + outFrame.length + dataLength;
+        const bufLength = buf ? buf.length : 0;
+        const outLength = bufLength + outFrame.length + this.data.length;
 
         const out = Buffer.alloc(outLength);
 
@@ -101,10 +99,7 @@ export default class Frame {
         }
 
         out.set(outFrame, bufLength);
-
-        if (this.data) {
-            out.set(this.data, bufLength + outFrame.length);
-        }
+        out.set(this.data, bufLength + outFrame.length);
 
         return out;
     }

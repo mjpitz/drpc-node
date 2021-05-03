@@ -1,7 +1,7 @@
 import uint64 from "./uint64";
 
 describe("uint64", () => {
-    test("uint64 basic", () => {
+    test("basic usage", () => {
         let testUint64 = uint64.new(0);
         expect(testUint64.toString(16)).toEqual("0");
         expect(testUint64.toString()).toEqual("0");
@@ -43,7 +43,7 @@ describe("uint64", () => {
         expect(testUint64.toString()).toEqual("0");
     });
 
-    test("uint64 math", () => {
+    test("math usage", () => {
         let testUint64 = uint64.new(1).leftShift(32).subtract(1);
         expect(testUint64.toString(16)).toEqual("ffffffff");
         expect(testUint64.toString()).toEqual("4294967295");
@@ -61,7 +61,7 @@ describe("uint64", () => {
         expect(testUint64.toString()).toEqual("4294967296");
     });
 
-    test("uint64 comparisons", () => {
+    test("comparisons", () => {
         {
             const a = uint64.new(137438887936);
             const b = uint64.new(137438887936);

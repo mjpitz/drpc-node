@@ -16,20 +16,20 @@ describe("frame", () => {
             control: false,
         });
 
-        let buf = Frame.appendToBuffer(frame, null)
-        expect(buf.length).toEqual(30)
-        expect(buf.toString("hex")).toEqual("04ffffffffffffff0fffffffffffffff0f0c68656c6c6f20776f726c6421")
+        let buf = Frame.appendToBuffer(frame, null);
+        expect(buf.length).toEqual(30);
+        expect(buf.toString("hex")).toEqual("04ffffffffffffff0fffffffffffffff0f0c68656c6c6f20776f726c6421");
 
-        let [ rem, read ] = Frame.fromBuffer(buf)
-        expect(rem.length).toEqual(0)
+        let [ rem, read ] = Frame.fromBuffer(buf);
+        expect(rem.length).toEqual(0);
 
-        expect(read.data.toString("ascii")).toEqual("hello world!")
-        expect(read.id.stream.equals(frame.id.stream)).toBeTruthy()
-        expect(read.id.message.equals(frame.id.message)).toBeTruthy()
-        expect(read.kind.toString()).toEqual(frame.kind.toString())
-        expect(read.kind.valueOf()).toEqual(frame.kind.valueOf())
-        expect(read.done.toString()).toEqual(frame.done.toString())
-        expect(read.control.toString()).toEqual(frame.control.toString())
+        expect(read.data.toString("ascii")).toEqual("hello world!");
+        expect(read.id.stream.equals(frame.id.stream)).toBeTruthy();
+        expect(read.id.message.equals(frame.id.message)).toBeTruthy();
+        expect(read.kind.toString()).toEqual(frame.kind.toString());
+        expect(read.kind.valueOf()).toEqual(frame.kind.valueOf());
+        expect(read.done.toString()).toEqual(frame.done.toString());
+        expect(read.control.toString()).toEqual(frame.control.toString());
     });
 
     test("round trip (close)", () => {
@@ -44,20 +44,20 @@ describe("frame", () => {
             control: true,
         });
 
-        let buf = Frame.appendToBuffer(frame, null)
-        expect(buf.length).toEqual(18)
-        expect(buf.toString("hex")).toEqual("8bffffffffffffff0fffffffffffffff0f00")
+        let buf = Frame.appendToBuffer(frame, null);
+        expect(buf.length).toEqual(18);
+        expect(buf.toString("hex")).toEqual("8bffffffffffffff0fffffffffffffff0f00");
 
 
-        let [ rem, read ] = Frame.fromBuffer(buf)
-        expect(rem.length).toEqual(0)
+        let [ rem, read ] = Frame.fromBuffer(buf);
+        expect(rem.length).toEqual(0);
 
-        expect(read.data.length).toBe(0)
-        expect(read.id.stream.equals(frame.id.stream)).toBeTruthy()
-        expect(read.id.message.equals(frame.id.message)).toBeTruthy()
-        expect(read.kind.toString()).toEqual(frame.kind.toString())
-        expect(read.kind.valueOf()).toEqual(frame.kind.valueOf())
-        expect(read.done.toString()).toEqual(frame.done.toString())
-        expect(read.control.toString()).toEqual(frame.control.toString())
+        expect(read.data.length).toBe(0);
+        expect(read.id.stream.equals(frame.id.stream)).toBeTruthy();
+        expect(read.id.message.equals(frame.id.message)).toBeTruthy();
+        expect(read.kind.toString()).toEqual(frame.kind.toString());
+        expect(read.kind.valueOf()).toEqual(frame.kind.valueOf());
+        expect(read.done.toString()).toEqual(frame.done.toString());
+        expect(read.control.toString()).toEqual(frame.control.toString());
     });
 });

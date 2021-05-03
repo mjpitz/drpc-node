@@ -2,7 +2,7 @@ import ID from "./id";
 import Kind from "./kind";
 
 interface PacketProps {
-    data: Uint8Array
+    data: Buffer
     id: ID
     kind: Kind
 }
@@ -11,7 +11,7 @@ interface PacketProps {
  * Packet is a single message sent by drpc.
  */
 export default class Packet {
-    data: Uint8Array
+    data: Buffer
     id: ID
     kind: Kind
 
