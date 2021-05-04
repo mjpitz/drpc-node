@@ -7,6 +7,20 @@ interface WriterProps {
     writable: Writable
 }
 
+/**
+ * Writer is used to send the provided Packet or Frame to the underlying transport.
+ *
+ * <code>
+ *     const writer = new Writer({ writable });
+ *
+ *     // send data
+ *     writer.emit("packet", packet);
+ *     writer.emit("frame", frame);
+ *
+ *     // close the underlying writable
+ *     writer.end();
+ * </code>
+ */
 export default class Writer extends EventEmitter {
     private readonly writable: Writable
 
