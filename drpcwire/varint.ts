@@ -1,4 +1,5 @@
 import uint64 from "./uint64";
+import {ProtocolError} from "../errors";
 
 export const readVarint = (buffer: Buffer): [Buffer, uint64] => {
     let rem = buffer;
@@ -19,7 +20,7 @@ export const readVarint = (buffer: Buffer): [Buffer, uint64] => {
         }
     }
 
-    throw new Error("varint too long");
+    throw ProtocolError.new("varint too long");
 };
 
 export const appendVarint = (buf: Buffer, i: uint64): Buffer => {
