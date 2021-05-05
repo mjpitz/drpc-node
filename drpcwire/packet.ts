@@ -22,14 +22,7 @@ export default class Packet {
     }
 
     append(data: Buffer) {
-        if (this.data.length == 0) {
-            this.data = data.slice(0);
-        } else {
-            let buffer = Buffer.alloc(this.data.length + data.length);
-            buffer.set(this.data, 0);
-            buffer.set(data, this.data.length);
-            this.data = buffer;
-        }
+        this.data = Buffer.concat([this.data, data]);
     }
 
     toString(): string {

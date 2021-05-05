@@ -89,18 +89,6 @@ export default class Frame {
         outFrame = appendVarint(outFrame, this.id.message);
         outFrame = appendVarint(outFrame, uint64.new(this.data.length));
 
-        const bufLength = buf ? buf.length : 0;
-        const outLength = bufLength + outFrame.length + this.data.length;
-
-        const out = Buffer.alloc(outLength);
-
-        if (buf) {
-            out.set(buf, 0);
-        }
-
-        out.set(outFrame, bufLength);
-        out.set(this.data, bufLength + outFrame.length);
-
-        return out;
+        return Buffer.concat([ buf, outFrame, this.data ].filter((i) => !!i));
     }
 }

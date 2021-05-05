@@ -35,12 +35,5 @@ export const appendVarint = (buf: Buffer, i: uint64): Buffer => {
     }
     encoded.push(x.valueOf());
 
-    return append(buf, ...encoded);
+    return Buffer.concat([buf, Uint8Array.from(encoded)]);
 };
-
-function append(a: Buffer, ...b: number[]): Buffer {
-    const c = Buffer.alloc(a.length + b.length);
-    c.set(a, 0);
-    c.set(b, a?.length);
-    return c;
-}

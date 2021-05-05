@@ -71,15 +71,7 @@ export default class Reader extends EventEmitter {
     }
 
     private _data(chunk: Buffer) {
-        let buf = this.buffer;
-        if (!buf) {
-            buf = chunk;
-        } else {
-            let next = Buffer.alloc(buf.length + chunk.length);
-            next.set(buf, 0);
-            next.set(chunk, buf.length);
-            buf = next;
-        }
+        let buf = Buffer.concat([this.buffer, chunk].filter((s)=> !!s));
         this.buffer = buf;
 
         let frame: Frame;

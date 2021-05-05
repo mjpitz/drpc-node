@@ -15,10 +15,7 @@ describe("writer", () => {
             writable: new Writable({
                 write(chunk: any, encoding: BufferEncoding, callback: (error?: (Error | null)) => void) {
                     try {
-                        let next = Buffer.alloc(buffer.length + chunk.length);
-                        next.set(buffer, 0);
-                        next.set(chunk, buffer.length);
-                        buffer = next;
+                        buffer = Buffer.concat([buffer, chunk]);
                         callback(null);
                     } catch (err) {
                         callback(err);
