@@ -67,7 +67,6 @@ export default class Reader extends EventEmitter {
         if (frame.done) {
             this.emit("packet", this.packet);
             this.packet = null;
-            this.id = null;
         }
     }
 
