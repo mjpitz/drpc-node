@@ -1,6 +1,6 @@
 # drpc-node
 
-The start to a NodeJS implementation of Stroj Labs [DRPC](https://storj.github.io/drpc/) project.
+The start to a NodeJS implementation of Storj's [DRPC](https://storj.github.io/drpc/) project.
 
 [![Codecov](https://img.shields.io/codecov/c/github/mjpitz/drpc-node)](https://codecov.io/gh/mjpitz/drpc-node)
 ![Experimental](https://img.shields.io/badge/version-experimental-green.svg)
@@ -14,5 +14,5 @@ Please see:
 
 ## Licensing
 
-Since DRPC is licensed under the MIT license by Stroj Labs, drpc-node is licensed similarly.
+Since DRPC is licensed under the MIT license by Storj, drpc-node is licensed similarly.
 See the LICENSE file for more.
