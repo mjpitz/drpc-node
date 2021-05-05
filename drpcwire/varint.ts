@@ -35,5 +35,5 @@ export const appendVarint = (buf: Buffer, i: uint64): Buffer => {
     }
     encoded.push(x.valueOf());
 
-    return Buffer.concat([buf, Uint8Array.from(encoded)]);
+    return Buffer.concat([buf, Buffer.from(encoded)]);
 };
