@@ -37,14 +37,14 @@ export default class Frame {
         let len: uint64;
 
         let rem = buf.slice(1);
-        [ rem, streamID ] = readVarint(rem);
-        [ rem, messageID ] = readVarint(rem);
-        [ rem, len ] = readVarint(rem);
+        [rem, streamID] = readVarint(rem);
+        [rem, messageID] = readVarint(rem);
+        [rem, len] = readVarint(rem);
 
         const data = rem.slice(0, len.valueOf());
         rem = rem.slice(len.valueOf());
 
-        return [ rem, new Frame({
+        return [rem, new Frame({
             data,
             id: new ID({
                 stream: streamID,
@@ -53,7 +53,7 @@ export default class Frame {
             kind: Kind.of(kind),
             done,
             control,
-        }) ];
+        })];
     }
 
     static appendToBuffer(fr: Frame, buf?: Buffer): Buffer {
@@ -89,6 +89,6 @@ export default class Frame {
         outFrame = appendVarint(outFrame, this.id.message);
         outFrame = appendVarint(outFrame, uint64.new(this.data.length));
 
-        return Buffer.concat([ buf, outFrame, this.data ].filter((i) => !!i));
+        return Buffer.concat([buf, outFrame, this.data].filter((i) => !!i));
     }
 }

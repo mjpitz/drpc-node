@@ -8,7 +8,7 @@ import Frame from "./frame";
 describe("splitPacket", () => {
     test("no split", () => {
         let packet = new Packet({
-            data: Buffer.alloc("hello world!".length, "hello world!", "ascii"),
+            data: Buffer.from("hello world!", "ascii"),
             id: new ID({
                 stream: uint64.new(Number.MAX_SAFE_INTEGER),
                 message: uint64.new(Number.MAX_SAFE_INTEGER),
@@ -28,7 +28,7 @@ describe("splitPacket", () => {
 
     test("default split", () => {
         let packet = new Packet({
-            data: Buffer.alloc("hello world!".length, "hello world!", "ascii"),
+            data: Buffer.from("hello world!", "ascii"),
             id: new ID({
                 stream: uint64.new(Number.MAX_SAFE_INTEGER),
                 message: uint64.new(Number.MAX_SAFE_INTEGER),
@@ -48,7 +48,7 @@ describe("splitPacket", () => {
 
     test("split", () => {
         let packet = new Packet({
-            data: Buffer.alloc("hello world!".length, "hello world!", "ascii"),
+            data: Buffer.from("hello world!", "ascii"),
             id: new ID({
                 stream: uint64.new(Number.MAX_SAFE_INTEGER),
                 message: uint64.new(Number.MAX_SAFE_INTEGER),
@@ -59,7 +59,7 @@ describe("splitPacket", () => {
         let i = 0;
         const expectedFrames = [
             new Frame({
-                data: Buffer.alloc("hello ".length, "hello ", "ascii"),
+                data: Buffer.from("hello ", "ascii"),
                 id: new ID({
                     stream: uint64.new(Number.MAX_SAFE_INTEGER),
                     message: uint64.new(Number.MAX_SAFE_INTEGER),
@@ -67,7 +67,7 @@ describe("splitPacket", () => {
                 kind: Kind.INVOKE,
             }),
             new Frame({
-                data: Buffer.alloc("world!".length, "world!", "ascii"),
+                data: Buffer.from("world!", "ascii"),
                 id: new ID({
                     stream: uint64.new(Number.MAX_SAFE_INTEGER),
                     message: uint64.new(Number.MAX_SAFE_INTEGER),

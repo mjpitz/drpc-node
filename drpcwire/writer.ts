@@ -1,7 +1,6 @@
-import { Writable } from "stream";
+import {Writable} from "stream";
 import Packet from "./packet";
 import Frame from "./frame";
-import {EventEmitter} from "events";
 
 interface WriterProps {
     writable: Writable
@@ -14,27 +13,22 @@ interface WriterProps {
  *     const writer = new Writer({ writable });
  *
  *     // send data
- *     writer.emit("packet", packet);
- *     writer.emit("frame", frame);
+ *     writer.writePacket(packet);
+ *     writer.writeFrame(frame);
  *
  *     // close the underlying writable
  *     writer.end();
  * </code>
  */
-export default class Writer extends EventEmitter {
+export default class Writer {
     private readonly writable: Writable
 
-    constructor({ writable }: WriterProps) {
-        super();
-
+    constructor({writable}: WriterProps) {
         this.writable = writable;
-
-        this.on("packet", this._writePacket.bind(this));
-        this.on("frame", this._writeFrame.bind(this));
     }
 
-    private _writePacket(packet: Packet) {
-        this.emit("frame", new Frame({
+    writePacket(packet: Packet): Promise<void> {
+        return this.writeFrame(new Frame({
             data: packet.data,
             id: packet.id,
             kind: packet.kind,
@@ -42,8 +36,16 @@ export default class Writer extends EventEmitter {
         }));
     }
 
-    private _writeFrame(frame: Frame) {
-        this.writable.write(Frame.appendToBuffer(frame));
+    writeFrame(frame: Frame): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            this.writable.write(Frame.appendToBuffer(frame), (err: Error) => {
+                if (err != null) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
     }
 
     end() {

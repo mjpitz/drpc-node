@@ -30,16 +30,16 @@ export default class Reader extends EventEmitter {
     private id?: ID
     private packet?: Packet
 
-    constructor({ readable }: ReaderProps) {
+    constructor({readable}: ReaderProps) {
         super();
 
-        this.on("frame", this._frame.bind(this));
+        this.on("frame", this._handleFrame.bind(this));
 
-        readable.on("data", this._data.bind(this));
-        readable.on("close", this._close.bind(this));
+        readable.on("data", this._handleData.bind(this));
+        readable.on("close", this._handleClose.bind(this));
     }
 
-    private _frame(frame: Frame) {
+    private _handleFrame(frame: Frame) {
         if (frame.control) {
             // Ignore any frames with the control bit set so that we can use it in
             // the future to mean things to people who understand it.
@@ -54,14 +54,14 @@ export default class Reader extends EventEmitter {
                 kind: frame.kind,
             });
         } else if (frame.id.lessThan(this.id)) {
-            throw ProtocolError.new("id monotonicity violation");
+            throw new ProtocolError("id monotonicity violation");
         } else if (frame.kind != this.packet.kind) {
-            throw ProtocolError.new("packet kind change");
+            throw new ProtocolError("packet kind change");
         }
 
         this.packet.append(frame.data);
         if (this.packet.data.length > (4 << 20)) {
-            throw ProtocolError.new("data overflow");
+            throw new ProtocolError("data overflow");
         }
 
         if (frame.done) {
@@ -70,8 +70,8 @@ export default class Reader extends EventEmitter {
         }
     }
 
-    private _data(chunk: Buffer) {
-        let buf = Buffer.concat([this.buffer, chunk].filter((s)=> !!s));
+    private _handleData(chunk: Buffer) {
+        let buf = Buffer.concat([this.buffer, chunk].filter((s) => !!s));
         this.buffer = buf;
 
         let frame: Frame;
@@ -86,12 +86,12 @@ export default class Reader extends EventEmitter {
                     throw err;
                 }
 
-                throw InternalError.wrap(err);
+                throw new InternalError(err);
             }
         }
     }
 
-    private _close() {
+    private _handleClose() {
         this.emit("close");
     }
 }

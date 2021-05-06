@@ -11,7 +11,7 @@ describe("reader", () => {
     test("read packet", (done: DoneCallback) => {
         const expectedFrames = [
             new Frame({
-                data: Buffer.alloc("hello ".length, "hello ", "ascii"),
+                data: Buffer.from("hello ", "ascii"),
                 id: new ID({
                     stream: uint64.new(Number.MAX_SAFE_INTEGER),
                     message: uint64.new(Number.MAX_SAFE_INTEGER),
@@ -19,7 +19,7 @@ describe("reader", () => {
                 kind: Kind.INVOKE,
             }),
             new Frame({
-                data: Buffer.alloc("world!".length, "world!", "ascii"),
+                data: Buffer.from("world!", "ascii"),
                 id: new ID({
                     stream: uint64.new(Number.MAX_SAFE_INTEGER),
                     message: uint64.new(Number.MAX_SAFE_INTEGER),
@@ -36,7 +36,7 @@ describe("reader", () => {
         });
 
         const readable = Readable.from(buffer);
-        const reader = new Reader({ readable: readable });
+        const reader = new Reader({readable: readable});
 
         reader.on("packet", (packet: Packet) => {
             expect(packet.data.toString("ascii")).toEqual("hello world!");

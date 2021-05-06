@@ -6,7 +6,7 @@ import ID from "./id";
 describe("frame", () => {
     test("round trip (message)", () => {
         let frame = new Frame({
-            data: Buffer.alloc("hello world!".length, "hello world!", "ascii"),
+            data: Buffer.from("hello world!", "ascii"),
             id: new ID({
                 stream: uint64.new(Number.MAX_SAFE_INTEGER),
                 message: uint64.new(Number.MAX_SAFE_INTEGER),
@@ -20,7 +20,7 @@ describe("frame", () => {
         expect(buf.length).toEqual(30);
         expect(buf.toString("hex")).toEqual("04ffffffffffffff0fffffffffffffff0f0c68656c6c6f20776f726c6421");
 
-        let [ rem, read ] = Frame.fromBuffer(buf);
+        let [rem, read] = Frame.fromBuffer(buf);
         expect(rem.length).toEqual(0);
 
         expect(read.data.toString("ascii")).toEqual("hello world!");
@@ -49,7 +49,7 @@ describe("frame", () => {
         expect(buf.toString("hex")).toEqual("8bffffffffffffff0fffffffffffffff0f00");
 
 
-        let [ rem, read ] = Frame.fromBuffer(buf);
+        let [rem, read] = Frame.fromBuffer(buf);
         expect(rem.length).toEqual(0);
 
         expect(read.data.length).toBe(0);

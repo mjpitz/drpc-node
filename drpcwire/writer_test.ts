@@ -4,11 +4,10 @@ import Packet from "./packet";
 import ID from "./id";
 import uint64 from "./uint64";
 import Kind from "./kind";
-import DoneCallback = jest.DoneCallback;
 import Reader from "./reader";
 
 describe("writer", () => {
-    test("write packet", (done: DoneCallback) => {
+    test("write packet", async () => {
         let buffer = Buffer.alloc(0);
 
         let writer = new Writer({
@@ -24,8 +23,8 @@ describe("writer", () => {
             })
         });
 
-        writer.emit("packet", new Packet({
-            data: Buffer.alloc("hello world!".length, "hello world!", "ascii"),
+        await writer.writePacket(new Packet({
+            data: Buffer.from("hello world!", "ascii"),
             id: new ID({
                 stream: uint64.new(Number.MAX_SAFE_INTEGER),
                 message: uint64.new(Number.MAX_SAFE_INTEGER),
@@ -38,7 +37,7 @@ describe("writer", () => {
         expect(buffer.length).toEqual(30);
 
         const readable = Readable.from(buffer);
-        const reader = new Reader({ readable: readable });
+        const reader = new Reader({readable: readable});
 
         reader.on("packet", (packet: Packet) => {
             expect(packet.data.toString("ascii")).toEqual("hello world!");
@@ -50,6 +49,8 @@ describe("writer", () => {
             readable.emit("close");
         });
 
-        reader.on("close", done);
+        await new Promise((resolve) => {
+            reader.on("close", resolve);
+        });
     });
 });

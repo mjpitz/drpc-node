@@ -20,7 +20,7 @@ export const readVarint = (buffer: Buffer): [Buffer, uint64] => {
         }
     }
 
-    throw ProtocolError.new("varint too long");
+    throw new ProtocolError("varint too long");
 };
 
 export const appendVarint = (buf: Buffer, i: uint64): Buffer => {
