@@ -79,12 +79,10 @@ export default class Socket extends EventEmitter {
                 break;
 
             default:
-                if (!existingStream) {
-                    throw new ProtocolError("packet sent to unknown stream");
+                if (existingStream) {
+                    // delegate to stream
+                    existingStream.handlePacket(packet);
                 }
-
-                // delegate to stream
-                existingStream.handlePacket(packet);
         }
     }
 

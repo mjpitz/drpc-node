@@ -55,13 +55,13 @@ export interface IExampleService {
 
     serverStream(call: ServerWritableStream<ServerStreamRequest, ServerStreamResponse>)
 
-    clientStream(call: ServerDuplexStream<DuplexRequest, DuplexResponse>)
+    duplex(call: ServerDuplexStream<DuplexRequest, DuplexResponse>)
 }
 
 export class ExampleService extends Client {
     public static service: ServiceDefinition<IExampleService>;
 
-    constructor(address: string, credentials: ChannelCredentials, options?: object);
+    constructor(address: string, credentials: ChannelCredentials, options?: any);
 
     unary(req: UnaryRequest): Promise<UnaryResponse>
     unary(req: UnaryRequest, metadata: Metadata): Promise<UnaryResponse>
