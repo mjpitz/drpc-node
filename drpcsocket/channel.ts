@@ -18,12 +18,20 @@ export default class Channel<T>{
     private awaiting: Array<Consumer<T>>
 
     constructor() {
-        this.data = new Array<T>();
-        this.awaiting = new Array<(T) => void>();
+        this.data = [];
+        this.awaiting = [];
+    }
+
+    get length() {
+        return this.data.length;
+    }
+
+    get waiting() {
+        return this.awaiting.length;
     }
 
     private notify() {
-        while (this.data && this.awaiting) {
+        while (this.data.length > 0 && this.awaiting.length > 0) {
             const item = this.data.pop();
             const awaiting = this.awaiting.pop();
             awaiting(item);

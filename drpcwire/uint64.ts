@@ -47,10 +47,11 @@ export default class uint64 {
         return new uint64(low, high);
     }
 
-    private readonly _high: number
-    private readonly _low: number
+    private readonly _high: number;
+    private readonly _low: number;
 
-    private constructor(low: number, high?: number) {
+    // use with care
+    constructor(low: number, high?: number) {
         this._low = (mask & low) >>> 0;
         this._high = (mask & (high ? high : 0)) >>> 0;
     }
@@ -91,7 +92,7 @@ export default class uint64 {
 
         const caryBits = this._low >>> (bitsInBlock - bitShifts);
         return new uint64(
-            this._low << bitShifts,
+            (this._low << bitShifts),
             (this._high << bitShifts) | caryBits,
         );
     }

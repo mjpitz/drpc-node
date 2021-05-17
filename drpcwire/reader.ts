@@ -33,13 +33,13 @@ export default class Reader extends EventEmitter {
     constructor({readable}: ReaderProps) {
         super();
 
-        this.on("frame", this._handleFrame.bind(this));
+        this.on("frame", this.handleFrame.bind(this));
 
-        readable.on("data", this._handleData.bind(this));
-        readable.on("close", this._handleClose.bind(this));
+        readable.on("data", this.handleData.bind(this));
+        readable.on("close", this.handleClose.bind(this));
     }
 
-    private _handleFrame(frame: Frame) {
+    private handleFrame(frame: Frame) {
         if (frame.control) {
             // Ignore any frames with the control bit set so that we can use it in
             // the future to mean things to people who understand it.
@@ -70,7 +70,7 @@ export default class Reader extends EventEmitter {
         }
     }
 
-    private _handleData(chunk: Buffer) {
+    private handleData(chunk: Buffer) {
         let buf = Buffer.concat([this.buffer, chunk].filter((s) => !!s));
         this.buffer = buf;
 
@@ -91,7 +91,7 @@ export default class Reader extends EventEmitter {
         }
     }
 
-    private _handleClose() {
+    private handleClose() {
         this.emit("close");
     }
 }
