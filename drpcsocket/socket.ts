@@ -134,32 +134,4 @@ export default class Socket extends EventEmitter {
         this.streamID = this.streamID.add(1);
         return this.newStream(this.streamID);
     }
-
-    // static async main() {
-    //     const server = createServer((socket: NetSocket) => {
-    //         // handle socket
-    //         const drpcSocket = new Socket({ socket });
-    //
-    //         drpcSocket.on("stream", (stream: Stream) => {
-    //             stream.on("message", (buffer: Buffer) => {
-    //                 // handle message
-    //             });
-    //
-    //             stream.on("close", (err?: Error) => {
-    //                 // stream closed
-    //             });
-    //
-    //             //
-    //             stream.write(Kind.MESSAGE, Buffer.alloc(0));
-    //         });
-    //
-    //         drpcSocket.on("close", () => {
-    //             // socket closed
-    //         });
-    //     });
-    //
-    //     server.listen(8080, "0.0.0.0", () => {
-    //         // listening
-    //     });
-    // }
 }
