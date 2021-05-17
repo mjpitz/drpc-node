@@ -1,5 +1,12 @@
 import uint64 from "./drpcwire/uint64";
 
+/**
+ * Err provides the general structure of an Error without extending that hierarchy.
+ *
+ * For some reason, extending JavaScript's Error causes "instanceof Extended" calls to fail (at least in Jest).
+ *
+ * Coming back to fix this later on isn't too hard...
+ */
 export class Err {
     name: string;
     readonly message: string;
