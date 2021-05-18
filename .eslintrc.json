@@ -5,13 +5,12 @@
         "plugin:@typescript-eslint/recommended"
     ],
     "rules": {
-        "@typescript-eslint/no-empty-interface": "error",
+        "@typescript-eslint/no-empty-interface": "off",
         "quotes": ["error", "double"],
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "prefer-const": "off",
         "semi": ["error", "always"]
-
 
         // "max-classes-per-file": ["error", 0],
         // "interface-name": false,
