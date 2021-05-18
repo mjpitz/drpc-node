@@ -1,0 +1,9 @@
+version: v1beta1
+
+plugins:
+  - name: go
+    opt: paths=source_relative
+    out: go
+  - name: go-drpc
+    opt: paths=source_relative
+    out: go

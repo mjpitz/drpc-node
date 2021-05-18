@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package echo.v1;
+
+option go_package = "github.com/mjpitz/drpc-node/integration_tests/go/echo/v1;echov1";
+
+service EchoService {
+    rpc Echo(Echo) returns (Echo);
+}
+
+message Echo {
+    string message = 1;
+}
