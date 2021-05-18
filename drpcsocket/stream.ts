@@ -157,13 +157,13 @@ export default class Stream extends EventEmitter {
 
         this.writeCount++;
         try {
-            let promises: Array<Promise<void>> = [];
+            let chain = Promise.resolve();
 
             split(this.newPacket(kind, data), this.opts.splitSize, (frame: Frame) => {
-                promises.push(this.writer.writeFrame(frame));
+                chain = chain.then(() => this.writer.writeFrame(frame));
             });
 
-            await Promise.all(promises);
+            await chain;
 
         } finally {
             this.writeCount--;
