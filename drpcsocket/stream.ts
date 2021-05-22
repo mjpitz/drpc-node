@@ -164,7 +164,10 @@ export default class Stream extends EventEmitter {
             });
 
             await chain;
-
+        } catch (err) {
+            // failed to write to stream
+            this.end(err);
+            throw err;
         } finally {
             this.writeCount--;
             this.checkFinished();
