@@ -10,6 +10,8 @@ async function main() {
         socket.on("stream", (stream: Stream) => {
             stream.on("message", (buffer: Buffer) => {
                 console.log(buffer.toString("hex"));
+                // because of the way the echo service is written, we should be able to just
+                // write this back and everything should work fine.
                 stream.write(Kind.MESSAGE, buffer);
             });
         });

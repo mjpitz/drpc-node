@@ -23,7 +23,6 @@ func main() {
 		echoClient := echov1.NewDRPCEchoServiceClient(drpcConn)
 
 		for {
-			log.Print("calling service")
 			echo, err := echoClient.Echo(context.Background(), &echov1.Echo{
 				Message: "hello world!",
 			})
