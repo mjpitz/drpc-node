@@ -100,6 +100,7 @@ export default class Socket extends EventEmitter {
             case Kind.INVOKE_METADATA:
                 if (existingStream) {
                     // todo: is throw the right action here?
+                    // update: throwing is definitely not the right action here
                     throw new ProtocolError("invoke on existing stream");
                 }
 
@@ -108,6 +109,7 @@ export default class Socket extends EventEmitter {
             case Kind.INVOKE:
                 if (existingStream) {
                     // todo: is throw the right action here?
+                    // update: throwing is definitely not the right action here
                     throw new ProtocolError("invoke on existing stream");
                 }
 
