@@ -1,0 +1,5 @@
+ignore:
+  - .github
+  - examples
+  - integration_tests
+  - node_modules
