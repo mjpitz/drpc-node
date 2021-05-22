@@ -7,14 +7,14 @@ import Packet from "../drpcwire/packet";
 import ID from "../drpcwire/id";
 import Kind from "../drpcwire/kind";
 import {ErrorWithCode, ProtocolError} from "../errors";
-import {encodeError, parseError} from "../drpcwire/error";
+import {encodeError} from "../drpcwire/error";
 
 function newStream(): [Channel<Buffer>, Stream] {
-    const writer = new Writer({ writable: new Writable() });
+    const writer = new Writer({writable: new Writable()});
     const id = uint64.new(0);
 
     const channel = new Channel<Buffer>();
-    const stream = new Stream({writer, id, opts:{}});
+    const stream = new Stream({writer, id, opts: {}});
     stream.on("message", (message: Buffer) => {
         channel.push(message);
     });
@@ -35,12 +35,12 @@ function newPacket(kind: Kind, data: Buffer): Packet {
 
 describe("stream", () => {
     test("open --> terminated --> finished", () => {
-        const [ channel, stream ] = newStream();
+        const [, stream] = newStream();
         stream.end(null);
     });
 
     test("open -- invoke --> terminated --> finished", (done) => {
-        const [ channel, stream ] = newStream();
+        const [, stream] = newStream();
 
         stream.on("close", (err: Error) => {
             expect(err).not.toBeNull();
@@ -53,7 +53,7 @@ describe("stream", () => {
     });
 
     test("open -- recv --> open", async () => {
-        const [ channel, stream ] = newStream();
+        const [channel, stream] = newStream();
 
         stream.handlePacket(newPacket(Kind.MESSAGE, Buffer.from("hello world!", "ascii")));
 
@@ -63,7 +63,7 @@ describe("stream", () => {
     });
 
     test("open --> recv-closed", (done) => {
-        const [ channel, stream ] = newStream();
+        const [, stream] = newStream();
 
         stream.on("close", (err: Error) => {
             expect(err).not.toBeNull();
@@ -82,7 +82,7 @@ describe("stream", () => {
     });
 
     test("open -- close --> terminated --> finished", (done) => {
-        const [ channel, stream ] = newStream();
+        const [, stream] = newStream();
 
         stream.on("close", (err: Error) => {
             expect(err).not.toBeNull();
@@ -94,7 +94,7 @@ describe("stream", () => {
     });
 
     test("open -- close_send --> terminated --> finished", () => {
-        const [ channel, stream ] = newStream();
+        const [channel, stream] = newStream();
 
         stream.handlePacket(newPacket(Kind.CLOSE_SEND, Buffer.alloc(0)));
 

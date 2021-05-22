@@ -1,4 +1,3 @@
-import {createServer, Socket as NetSocket} from "net";
 import Reader from "../drpcwire/reader";
 import Writer from "../drpcwire/writer";
 import Packet from "../drpcwire/packet";
@@ -13,7 +12,8 @@ interface SocketProps {
     socket: Duplex
 }
 
-interface NewClientStreamParams {}
+interface NewClientStreamParams {
+}
 
 /**
  * In NodeJS, Sockets are created when a client dials a server, or a server accepts a new connection. This Socket
@@ -59,16 +59,17 @@ interface NewClientStreamParams {}
  * removed from the internal Stream table.
  */
 export default class Socket extends EventEmitter {
-    private streamID: uint64
-    private readonly reader: Reader
-    private readonly writer: Writer
-    private readonly streams: { [key: string]: Stream }
+    private streamID: uint64;
+    private readonly reader: Reader;
+    private readonly writer: Writer;
+    private readonly streams: { [key: string]: Stream };
+    private readonly socket: Duplex;
 
-    constructor({ socket }: SocketProps) {
+    constructor({socket}: SocketProps) {
         super();
         this.streamID = uint64.new(0);
-        this.reader = new Reader({ readable: socket });
-        this.writer = new Writer({ writable: socket });
+        this.reader = new Reader({readable: socket});
+        this.writer = new Writer({writable: socket});
         this.streams = {};
 
         this.reader.on("packet", this.handlePacket.bind(this));
@@ -99,18 +100,16 @@ export default class Socket extends EventEmitter {
         switch (packet.kind) {
             case Kind.INVOKE_METADATA:
                 if (existingStream) {
-                    // todo: is throw the right action here?
-                    // update: throwing is definitely not the right action here
-                    throw new ProtocolError("invoke on existing stream");
+                    this.end(new ProtocolError("invoke on existing stream"));
+                    return;
                 }
 
                 // pull metadata off packet
                 break;
             case Kind.INVOKE:
                 if (existingStream) {
-                    // todo: is throw the right action here?
-                    // update: throwing is definitely not the right action here
-                    throw new ProtocolError("invoke on existing stream");
+                    this.end(new ProtocolError("invoke on existing stream"));
+                    return;
                 }
 
                 this.newStream(packet.id.stream);
@@ -125,15 +124,21 @@ export default class Socket extends EventEmitter {
     }
 
     private handleClose() {
-        Object.keys(this.streams).
-            map((key) => this.streams[key]).
-            forEach((stream) => stream.end(new Error("socket closed")));
+        Object.keys(this.streams)
+            .map((key) => this.streams[key])
+            .forEach((stream) => stream.end(new Error("socket closed")));
 
         this.emit("close");
     }
 
-    public newClientStream({}: NewClientStreamParams): Stream {
+    newClientStream({}: NewClientStreamParams): Stream {
         this.streamID = this.streamID.add(1);
         return this.newStream(this.streamID);
+    }
+
+    end(err?: Error): Promise<void> {
+        Object.keys(this.streams).forEach((key) => this.streams[key].end(err));
+
+        return new Promise<void>((resolve) => this.socket.end(resolve));
     }
 }

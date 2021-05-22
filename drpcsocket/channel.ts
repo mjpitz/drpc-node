@@ -1,5 +1,7 @@
+/**
+ * Consumer is an internal abstraction used to reference promise resolvers.
+ */
 declare type Consumer<T> = (t: T) => void
-
 
 /**
  * Channel implements a queue-like structure that behaves similarly to Golang's chan primitive.
@@ -13,9 +15,9 @@ declare type Consumer<T> = (t: T) => void
  *     // message = "hello world"
  * </code>
  */
-export default class Channel<T>{
-    private data: Array<T>
-    private awaiting: Array<Consumer<T>>
+export default class Channel<T> {
+    private data: Array<T>;
+    private awaiting: Array<Consumer<T>>;
 
     constructor() {
         this.data = [];
@@ -45,7 +47,7 @@ export default class Channel<T>{
 
     poll(): Promise<T> {
         return new Promise<T>((resolve) => {
-            this.awaiting = [].concat([ resolve ], this.awaiting);
+            this.awaiting = [].concat([resolve], this.awaiting);
             this.notify();
         });
     }

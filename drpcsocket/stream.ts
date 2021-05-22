@@ -33,7 +33,7 @@ interface StreamProps {
 }
 
 const sendClosed = new Error("send closed");
-const endErr = new Error("stream terminated by sending error");
+//const endErr = new Error("stream terminated by sending error");
 const endClosed = new Error("stream terminated by sending close");
 const endBothClosed = new Error("stream terminated by both issuing close send");
 
@@ -41,15 +41,15 @@ const endBothClosed = new Error("stream terminated by both issuing close send");
  * Stream represents an RPC actively happening on a transport.
  */
 export default class Stream extends EventEmitter {
-    private readonly opts: StreamOpts
+    private readonly opts: StreamOpts;
 
-    private writeCount: number
+    private writeCount: number;
 
-    private readonly id: ID
-    private readonly writer: Writer
+    private readonly id: ID;
+    private readonly writer: Writer;
 
-    private currentState: State
-    private err?: Error
+    private currentState: State;
+    private err?: Error;
 
     public constructor({writer, id, opts}: StreamProps) {
         super();
