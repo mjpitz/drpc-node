@@ -5,7 +5,12 @@
   "scripts": {
     "lint": "eslint **/*.ts",
     "lint-fix": "eslint **/*.ts --fix",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "integration-tests-docker-build": "docker build integration_tests -f integration_tests/docker/Dockerfile -t mjpitz/drpc-node",
+    "integration-tests-buf-generate": "docker run --rm -it -v $(pwd)/integration_tests/:/app -w /app mjpitz/drpc-node sh -c 'buf generate'",
+    "preintegration-tests": "npm run integration-tests-docker-build && npm run integration-tests-buf-generate",
+    "integration-tests": "",
+    "postintegration-tests": ""
   },
   "repository": {
     "type": "git",
