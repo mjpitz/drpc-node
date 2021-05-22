@@ -24,8 +24,20 @@ const bitsInBlock = 32;
  * This is currently a partial implementation and only provides the methods needed by the drpc.
  */
 export default class uint64 {
+    private static max: uint64;
     static get MAX_VALUE(): uint64 {
-        return new uint64(mask, mask);
+        if (uint64.max == undefined) {
+            uint64.max = new uint64(mask, mask);
+        }
+        return uint64.max;
+    }
+
+    private static zero: uint64;
+    static get ZERO_VALUE(): uint64 {
+        if (uint64.zero == undefined) {
+            uint64.zero = new uint64(0, 0);
+        }
+        return uint64.zero;
     }
 
     static new(val: number | uint64): uint64 {

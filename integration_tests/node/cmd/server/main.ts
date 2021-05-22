@@ -1,6 +1,7 @@
 import {createServer, Socket as NetSocket} from "net";
 import Socket from "../../../../drpcsocket/socket";
 import Stream from "../../../../drpcsocket/stream";
+import Kind from "../../../../drpcwire/kind";
 
 async function main() {
     const server = createServer((netSocket: NetSocket) => {
@@ -9,6 +10,7 @@ async function main() {
         socket.on("stream", (stream: Stream) => {
             stream.on("message", (buffer: Buffer) => {
                 console.log(buffer.toString("hex"));
+                stream.write(Kind.MESSAGE, buffer);
             });
         });
     });
